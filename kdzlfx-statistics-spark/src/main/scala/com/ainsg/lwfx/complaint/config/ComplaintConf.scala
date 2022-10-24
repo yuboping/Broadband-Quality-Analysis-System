@@ -1,0 +1,20 @@
+package com.ainsg.lwfx.complaint.config
+
+import com.ainsg.lwfx.util.LoadFiles
+/**
+ * 特征值计算相关配置
+ */
+object ComplaintConf {
+  val file: LoadFiles = new LoadFiles("complaint.properties")
+  val hadoopMaster = file.getProp("hadoop.master")
+  val usageComplaintPath = hadoopMaster + file.getProp("usageComplaint.path")
+  val provHistoryPath = hadoopMaster + file.getProp("provHistory.path")
+  val monthStatisticPath = hadoopMaster + file.getProp("monthStatistic.path")
+  val weekStatisticPath = hadoopMaster + file.getProp("weekStatistic.path")
+  val featurePath = hadoopMaster + file.getProp("feature.path")
+  val crmpath = hadoopMaster + file.getProp("crm.path")
+  val spark_tagcountTask = file.getProp("spark.tagcountTask.scope")
+  val spark_sql_dir = file.getProp("spark.sql.warehouse.dir")
+  val spark_name = file.getProp("spark.name")
+  val totalType = file.getProp("totalType")
+}

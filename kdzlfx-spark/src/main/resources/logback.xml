@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+  <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>[%date] [%level] [%thread] [%logger{50} : %line] %msg%n</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+  <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <prudent>true</prudent>
+    <Append>true</Append>
+    <encoder>
+      <pattern>[%date] [%level] [%thread] [%logger{50} : %line] %msg%n</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>ALL</level>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>./logs/main.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>30</maxHistory> 
+    </rollingPolicy>
+  </appender>
+  <logger name="org.apache.spark" level="error" additivity="true" />
+  <logger name="org.apache.hadoop" level="error" additivity="true" />
+  <logger name="org.spark_project.jetty" level="error" additivity="true"/>
+  <root level="info">
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="file"/>
+  </root>
+</configuration>

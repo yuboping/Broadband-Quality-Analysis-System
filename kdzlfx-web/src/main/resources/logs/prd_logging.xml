@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="log.base" value="D:\\home\\cesweblogs" /> 
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</pattern>
+		</layout>
+	</appender>
+	<appender name="MyBatis" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</pattern>
+		</layout>
+	</appender>
+	<!-- 文件输出日志 (文件大小策略进行文件输出，超过指定大小对文件备份) -->
+	<appender name="debugLog"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<File>${log.base}/debug.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>2MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+
+	<appender name="errorLog"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<File>${log.base}/error.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>100MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+	<logger name="org.springframework" additivity="true">
+		<level value="INFO" />
+	</logger>	
+	<!-- 数据库操作日志 -->
+	<logger name="org.mybatis" additivity="true">
+		<level value="INFO" />
+	</logger>	
+	<logger name="org.apache.ibatis" additivity="true">
+		<level value="INFO" />
+	</logger>
+	<logger name="java.sql.Connection" additivity="true">
+		<level value="INFO" />
+	</logger>
+	<logger name="java.sql.Statement" additivity="true">
+		<level value="INFO" />
+	</logger>
+	<logger name="java.sql.PreparedStatement" additivity="true">
+		<level value="INFO" />
+	</logger>
+	<logger name="java.sql.ResultSet" additivity="true">
+		<level value="INFO" />
+	</logger>
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="stdout" />
+		<appender-ref ref="errorLog" />
+	</root>
+</configuration>

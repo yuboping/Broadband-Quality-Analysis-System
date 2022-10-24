@@ -1,0 +1,15 @@
+package com.ainsg.lwfx.test
+
+import com.ainsg.lwfx.common.Spark
+import com.ainsg.lwfx.util.JdbcOracleHelper
+
+object JdbcOracleTest {
+  val spark = Spark.spark
+  def main(args: Array[String]): Unit = {
+    val featuresData = spark.read.format("csv")
+      .option("header", "true") //csv第一行有属性的话"true"，没有就是"false"
+      .load("/lcims/kdzlfx/data/aaa/userdet/character/201909")
+    val sql = "INSERT INTO CES_USER_CHARACTER_09 (USER_NAME,CITY_CODE,DIAL_SUM_MONTH,DIAL_MEAN_MONTH,DIAL_MEDIAN_MONTH,DIAL_SD2_MONTH,DIAL_ENTROPY_MONTH,TIMELEN_SUM_MONTH,TIMELEN_MEAN_MONTH,TIMELEN_MEDIAN_MONTH,TIMELEN_SD2_MONTH,TIMELEN_ENTROPY_MONTH,OUTOCTETS_SUM_MONTH,OUTOCTETS_MEAN_MONTH,OUTOCTETS_MEDIAN_MONTH,OUTOCTETS_SD2_MONTH,OUTOCTETS_ENTROPY_MONTH,INOCTETS_SUM_MONTH,INOCTETS_MEAN_MONTH,INOCTETS_MEDIAN_MONTH,INOCTETS_SD2_MONTH,INOCTETS_ENTROPY_MONTH,OUTPACKETS_SUM_MONTH,OUTPACKETS_MEAN_MONTH,OUTPACKETS_MEDIAN_MONTH,OUTPACKETS_SD2_MONTH,OUTPACKETS_ENTROPY_MONTH,INPACKETS_SUM_MONTH,INPACKETS_MEAN_MONTH,INPACKETS_MEDIAN_MONTH,INPACKETS_SD2_MONTH,INPACKETS_ENTROPY_MONTH,UNUSE_TIME,STATUS,STATUS_M) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+    JdbcOracleHelper.insertWithRDD(featuresData, sql)
+  }
+}

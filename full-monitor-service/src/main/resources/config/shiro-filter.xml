@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager" />
+        <property name="loginUrl" value="/" />
+        <property name="unauthorizedUrl" value="/static/error/unauthorized.jsp" />
+        <property name="filters">
+            <map>
+                <entry key="authc">
+                    <bean class="org.apache.shiro.web.filter.authc.PassThruAuthenticationFilter" />
+                </entry>
+                <entry key="perms">
+                    <bean class="com.asiainfo.security.URLPermissionsFilter" />
+                </entry>
+            </map>
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+                / = anon
+                /static/** = anon
+                /login.do = anon
+                /logout.do = logout
+                /healthCount.do = anon
+                /terminalCount.do = anon
+                /data/forecastOltOnline.do = anon
+                /data/forecastOltOnline/auto.do = anon
+                /data/forecastOltOnline/GUI.do = anon
+                /data/refreshCesOltHistory.do = anon
+                /data/** = authc
+                /** = authc
+            </value>
+        </property>
+    </bean>
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">  
+        <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>  
+        <property name="arguments" ref="securityManager"/>  
+    </bean>
+    <!-- 会话Cookie模板 -->  
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
+        <constructor-arg value="sid"/>  
+        <property name="httpOnly" value="true"/>  
+        <property name="maxAge" value="180000"/>  
+    </bean>
+    <!-- 会话管理器 -->  
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">  
+        <property name="globalSessionTimeout" value="1800000"/>  
+        <property name="deleteInvalidSessions" value="true"/>  
+        <property name="sessionValidationSchedulerEnabled" value="true"/>  
+        <property name="sessionIdCookieEnabled" value="true"/>  
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>  
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myShiroRealm" />
+        <property name="sessionManager" ref="sessionManager"/>  
+    </bean>
+
+    <bean id="myShiroRealm" class="com.asiainfo.security.ShiroRealm">
+        <property name="cacheManager" ref="shiroCacheManager" />
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+        <property name="cachingEnabled" value="true"/> 
+        <property name="authenticationCachingEnabled" value="true"/>  
+        <property name="authenticationCacheName" value="authenticationCache"/>  
+        <property name="authorizationCachingEnabled" value="true"/>  
+        <property name="authorizationCacheName" value="authorizationCache"/>  
+    </bean>
+    
+    <bean id="credentialsMatcher" class="com.asiainfo.security.RetryLimitHashedCredentialsMatcher">  
+        <constructor-arg ref="shiroCacheManager"/> 
+    </bean>
+    <bean id="initdata" class="com.asiainfo.initdata.InitDataListener" />
+
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+    <bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:config/ehcache.xml"/> 
+    </bean>
+</beans>

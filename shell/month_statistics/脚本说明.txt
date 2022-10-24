@@ -1,0 +1,11 @@
+###用途：首页环形图数据月统计; 用户宽带类型结构脚本  参数： 统计时间：YYYYMMDD 
+ces_user_broadband_stru.sh
+eg:sh ces_user_broadband_stru.sh 20190901
+
+###用途：首页环形图数据月统计 ; 用户健康度分布结构脚本  参数： 统计时间：YYYYMMDD
+ces_user_health_stru.sh
+eg:sh ces_user_health_stru.sh 20190901
+
+###用途：首页双环图数据月统计 ; 用户智能网关结构脚本  参数： 统计时间：YYYYMMDD
+ces_double_cycle_data.sh
+eg:sh ces_double_cycle_data.sh 20190901

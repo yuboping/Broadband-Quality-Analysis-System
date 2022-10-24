@@ -1,0 +1,19 @@
+package com.ainsg.lwfx.config
+
+import com.ainsg.lwfx.util.LoadFiles
+
+object OTTConf {
+  
+  val file: LoadFiles = new LoadFiles("ott.properties")
+  val hadoopMaster = file.getProp("hadoop.master")
+  val usageOTTPath = SparkConf.hadoopMaster + file.getProp("usageOTT.path")
+  val monthStatisticPath = SparkConf.hadoopMaster + file.getProp("monthStatistic.path")
+  val featurePath = SparkConf.hadoopMaster + file.getProp("feature.path")
+  val spark_tagcountTask = file.getProp("spark.tagcountTask.scope")
+  val spark_sql_dir = file.getProp("spark.sql.warehouse.dir")
+  val spark_name = file.getProp("spark.name")
+  val totalType = file.getProp("totalType")
+  val ottThreshold = file.getProp("ott.threshold")
+  val tempPath = file.getProp("temp.path")
+  
+}
